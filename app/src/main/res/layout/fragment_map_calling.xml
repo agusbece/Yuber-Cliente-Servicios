@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    tools:context="yuber.yuberClienteServicios.activity.MapCallYuberFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/fab_margin"
+        android:paddingLeft="@dimen/fab_margin"
+        android:paddingRight="@dimen/fab_margin"
+        android:gravity="center_horizontal"
+        android:id="@+id/bottomLayoutAskingForYuber">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geolocalizacion "
+            android:id="@+id/switchLocalization"
+            android:layout_gravity="center"
+            android:enabled="true"
+            android:checked="true"
+            android:visibility="gone"
+            android:textColor="#DF000000" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Origen"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:enabled="true"
+            android:textColor="#DF000000"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Elija su el origen de su viaje"
+            android:id="@+id/textUbicacionOrigen"
+            android:layout_gravity="center_horizontal|bottom"
+            android:gravity="bottom|center_horizontal"
+            android:textColor="#5F000000"/>
+
+        <Button
+            android:id="@+id/buttonMiUbicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MI UBICACION"
+            android:theme="@style/MyMaterialTheme"
+            android:textColor="@color/colorAccent"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

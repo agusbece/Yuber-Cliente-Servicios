@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    tools:context="yuber.yuberClienteServicios.activity.MapYubConfirmadoFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/fab_margin">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/y"
+            android:elevation="@dimen/abc_action_bar_subtitle_top_margin_material"
+            android:showDividers="middle|beginning|end"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Su Yuber esta en camino"
+                android:id="@+id/textEstadoFragmentoYubConfir"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:enabled="true"
+                android:textColor="#DF000000"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Destino"
+                android:id="@+id/textView2"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:enabled="true"
+                android:textColor="#DF000000"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elija un destino"
+                android:id="@+id/textUbicacionDestino"
+                android:layout_gravity="center_horizontal|bottom"
+                android:gravity="bottom|center_horizontal"
+                android:textColor="#5F000000"/>
+        </TableLayout>
+    </LinearLayout>
+
+</RelativeLayout>

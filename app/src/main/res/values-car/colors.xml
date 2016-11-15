@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+
+
+<!--         MATERIAL DESIGN BY GOOGLE
+  https://material.google.com/style/color.html#color-color-palette    -->
+    <color name="colorPrimary">#8bc34a</color>//
+    <color name="colorPrimaryDark">#689f38</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#448aff</color>
+</resources>

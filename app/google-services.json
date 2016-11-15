@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "852177740979",
+    "firebase_url": "https://yuber-146820.firebaseio.com",
+    "project_id": "yuber-146820",
+    "storage_bucket": "yuber-146820.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852177740979:android:b92781ab29b2af89",
+        "android_client_info": {
+          "package_name": "yuber.yuberClienteServicios"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852177740979-8t9q5cjjro4ci3lggf9fe0d96nt5vp5d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkRqp_OLLAqjxj3Ob_Fii3xX6PTWBV7So"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852177740979:android:f3f989ab0b172832",
+        "android_client_info": {
+          "package_name": "yuber.yuberClienteTransporte"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852177740979-8t9q5cjjro4ci3lggf9fe0d96nt5vp5d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkRqp_OLLAqjxj3Ob_Fii3xX6PTWBV7So"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

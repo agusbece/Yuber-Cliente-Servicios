@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="@dimen/dialog_body">
+
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingBottom="@dimen/padding_between"
+        android:paddingTop="@dimen/padding_between"
+        android:text="@string/viaje_fin_text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+    <LinearLayout
+        android:id="@+id/layour_distancia_fin_viaje"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/normal_padding"
+        android:weightSum="2"
+        android:layout_below="@+id/info_text">>
+
+        <TextView
+            android:text="Distancia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/textColorPrimaryBlack" />
+
+        <TextView
+            android:id="@+id/text_distancia_variable_fin_viaje"
+            android:text="$$"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/textColorPrimaryBlack" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_costo_fin_viaje"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/normal_padding"
+        android:weightSum="2"
+        android:layout_below="@+id/layour_distancia_fin_viaje">
+
+        <TextView
+            android:text="Costo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/textColorPrimaryBlack" />
+
+        <TextView
+            android:id="@+id/text_fin_viaje_costo_variable"
+            android:text="$$"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/textColorPrimaryBlack" />
+    </LinearLayout>
+
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBarFinViaje"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="53dp"
+        android:layout_marginEnd="53dp"
+        android:layout_below="@+id/layout_costo_fin_viaje"/>
+
+
+    <Button
+        android:id="@+id/boton_confirmar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/button_padding"
+        android:paddingTop="@dimen/button_padding"
+        android:text="OK"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/ratingBarFinViaje" />
+
+
+</RelativeLayout>
