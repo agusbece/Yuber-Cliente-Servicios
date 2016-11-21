@@ -36,13 +36,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
 
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
     private String Puerto = "8080";
 
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String EmailKey = "emailKey";
     public static final String TokenKey = "tokenKey";
     public static final String IdServicioKey = "IdServicioKey";
+    public static final String ServiciosKey = "ServiciosKey";
     public static final String TAG = "MAIN ACTIVITY";
 
     private int mIdServicio = 0;
@@ -53,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     public String getEmailSession(){
         return emailSession;
+    }
+
+    public int getmIdServicio(){
+        return mIdServicio;
     }
 
     public void setmIdServicio(int id){
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        Ip = getResources().getString(R.string.IP);
 
         //ADDED FOR TOOLBAR
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -105,9 +111,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
 
         if (id == R.id.action_cerrar_sesion) {
@@ -129,25 +135,22 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new ServiciosFragment();
-                title = getString(R.string.title_servicios);
-                break;
-            case 1:
                 fragment = new MapFragment();
                 SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                String stringJsonServicio = sharedPreferences.getString(IdServicioKey, "ERROR - ALGO ANDA MAL");
+                String stringJsonServicio = sharedPreferences.getString(ServiciosKey, "ERROR - ALGO ANDA MAL");
                 String nombreServicio = "";
                 try {
                     JSONObject jsonServicio = new JSONObject(stringJsonServicio);
                     nombreServicio = jsonServicio.getString("mNombre");
+                    mIdServicio = jsonServicio.getInt("mID");
                 } catch (JSONException e) {
                     e.printStackTrace();
                     nombreServicio = "ERROR";
                 }
                 title = nombreServicio;
                 break;
-            case 2:
+            case 1:
                 fragment = new HistoricFragment();
                 title = getString(R.string.title_historic);
                 break;

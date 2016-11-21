@@ -32,24 +32,6 @@
                 android:textColor="#DF000000"/>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Destino"
-                android:id="@+id/textView2"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:enabled="true"
-                android:textColor="#DF000000"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Elija un destino"
-                android:id="@+id/textUbicacionDestino"
-                android:layout_gravity="center_horizontal|bottom"
-                android:gravity="bottom|center_horizontal"
-                android:textColor="#5F000000"/>
         </TableLayout>
     </LinearLayout>
 

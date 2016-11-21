@@ -20,7 +20,7 @@ import yuber.yuberClienteServicios.R;
 public class FragmentDialogYuberHistorial extends DialogFragment {
     private static final String TAG = "FragmentDialogYuberHistorial";
     private JSONObject datos;
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
     private String Puerto = "8080";
 
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -44,6 +44,7 @@ public class FragmentDialogYuberHistorial extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View v = inflater.inflate(R.layout.dialogo_historial, null);
+        Ip = getResources().getString(R.string.IP);
         builder.setView(v);
 
         TextView textoFecha = (TextView) v.findViewById(R.id.text_fecha_historial);

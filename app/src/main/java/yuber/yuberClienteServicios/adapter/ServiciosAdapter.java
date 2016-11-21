@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,11 +18,13 @@ public class ServiciosAdapter extends RecyclerView.Adapter<ServiciosAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView textNombreServicio;
+        public ImageView imagenServicio;
        // public TextView textNombreServicio, year, genre;
 
         public MyViewHolder(View view) {
             super(view);
             textNombreServicio = (TextView) view.findViewById(R.id.titulo);
+            imagenServicio = (ImageView) view.findViewById(R.id.imageViewServicio);
             //genre = (TextView) view.findViewById(R.id.genre);
             //year = (TextView) view.findViewById(R.id.year);
         }
@@ -51,6 +54,14 @@ public class ServiciosAdapter extends RecyclerView.Adapter<ServiciosAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Servicios servicio = mServiciosList.get(position);
         holder.textNombreServicio.setText(servicio.getNombre());
+        if (servicio.getNombre().equals("Mecánico"))
+            holder.imagenServicio.setImageResource(R.drawable.maintenance_48);
+        else if (servicio.getNombre().equals("Carpintería"))
+            holder.imagenServicio.setImageResource(R.drawable.saw_48);
+        else if (servicio.getNombre().equals("Plomería"))
+            holder.imagenServicio.setImageResource(R.drawable.plumbing_48);
+        else if (servicio.getNombre().equals("Reparación PC"))
+            holder.imagenServicio.setImageResource(R.drawable.under_computer_48);
         //holder.genre.setText(movie.getGenre());
        // holder.year.setText(movie.getYear());
     }

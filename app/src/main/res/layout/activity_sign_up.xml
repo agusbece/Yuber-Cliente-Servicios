@@ -158,11 +158,6 @@
                 <Spinner android:id="@+id/currency" style="@style/Currency"
                     android:nextFocusForward="@+id/save" />
             </LinearLayout>
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/save"
-                android:text="Chequear"/>
         </LinearLayout>
 
         <!-- Signup Button -->

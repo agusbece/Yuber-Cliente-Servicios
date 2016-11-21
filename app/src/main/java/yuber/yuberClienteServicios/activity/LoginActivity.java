@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     private EditText mEmailView;
     private EditText mPasswordView;
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
     private String Puerto = "8080";
     ProgressDialog prgDialogCargando;
 
@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Ip = getResources().getString(R.string.IP);;
 
         mEmailView = (EditText) findViewById(R.id.input_email);
         mPasswordView = (EditText) findViewById(R.id.input_password);
@@ -131,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void cambiarAHome(){
         //Obtengo el mail
-        Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent homeIntent = new Intent(getApplicationContext(), ServiciosActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }

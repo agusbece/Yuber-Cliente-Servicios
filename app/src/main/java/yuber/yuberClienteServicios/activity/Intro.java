@@ -17,6 +17,8 @@ import com.loopj.android.http.RequestHandle;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import yuber.yuberClienteServicios.R;
 
 public class Intro extends AppCompatActivity {
@@ -26,7 +28,8 @@ public class Intro extends AppCompatActivity {
     public static final String TokenKey = "tokenKey";
     SharedPreferences sharedpreferences;
 
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
+
     private String Puerto = "8080";
 
     private static final String TAG = "INTRO";
@@ -36,6 +39,9 @@ public class Intro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        Ip = getResources().getString(R.string.IP);
+
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 String value = getIntent().getExtras().getString(key);
@@ -52,18 +58,6 @@ public class Intro extends AppCompatActivity {
         //Combruebo si ya tengo session.
         TengoSession(token);
 
-
-
-
-
-        //BOTON OPCIONAL PARA SALTEARSE EL LOGIN // SACAR EN LA IMPLEMENTACION
-        Button botonSaltearLogin = (Button) findViewById(R.id.button4);
-        botonSaltearLogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                saltearLogin(v);
-
-            }
-        });
 
     }
 
@@ -114,7 +108,7 @@ public class Intro extends AppCompatActivity {
     public void cambiarAMain(){
         Log.d(TAG, "cambiar a main ... XXXXX" );
 
-        Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent homeIntent = new Intent(getApplicationContext(), ServiciosActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }

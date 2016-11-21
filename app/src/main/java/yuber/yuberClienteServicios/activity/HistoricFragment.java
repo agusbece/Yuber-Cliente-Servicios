@@ -22,7 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import yuber.yuberClienteServicios.R;
@@ -36,13 +40,9 @@ public class HistoricFragment extends Fragment {
     public static final String HistorialKey = "historialKey";
     public static final String TAG = "FRAGMENTO HISTORIAL";
     SharedPreferences sharedpreferences;
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
     private String Puerto = "8080";
 
-    private JSONObject rec;
-    private JSONObject datos;
-    private JSONObject datos2;
-    private JSONObject datos3;
 
     public HistoricFragment() {
         // Required empty public constructor
@@ -57,18 +57,19 @@ public class HistoricFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_historic, container, false);
+        Ip = getResources().getString(R.string.IP);
 
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view_historic);
         rv.setHasFixedSize(true);
 
-        prepareMovieData();
+        obtenerServiciosDisponibles();
         HistorialAdapter adapter = new HistorialAdapter(historialList);
 
         rv.setAdapter(adapter);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 
-        rv.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), rv, new RecyclerTouchListener.ClickListener() {
+        rv.addOnItemTouchListener(new HistoricRecyclerTouchListener(getActivity().getApplicationContext(), rv, new HistoricRecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Historial historial = historialList.get(position);
@@ -89,10 +90,12 @@ public class HistoricFragment extends Fragment {
         newFragmentDialog.show(getActivity().getSupportFragmentManager(), "TAG");
     }
 
-    private void prepareMovieData() {
+    private void obtenerServiciosDisponibles() {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        int idServicio = mainActivity.getmIdServicio();
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
         String email = sharedpreferences.getString(EmailKey, "");
-        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Cliente/MisReseñasObtenidas/" + email;
+        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Cliente/ObtenerHistorial/" + email + "," + idServicio;
         Log.d(TAG, "LA URL ES: " + url);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(null, url, new AsyncHttpResponseHandler(){
@@ -126,56 +129,68 @@ public class HistoricFragment extends Fragment {
         String Puntaje;
         String Costo;
         String Distancia;
-        String UbicacionJSON;
-        String LatitudO;
-        String LongitudO;
-        String LatitudD;
-        String LongitudD;
+        String latOrigen;
+        String longOrigen;
+        String latDestino;
+        String longDestino;
         String instanciaServicioJSON;
         String Fecha;
         Historial historial;
+
+
+        JSONObject dataHistoria;
+        JSONObject jsonReseniaProveedor;
+
         try {
             JSONArray arr_strJson = new JSONArray(response);
             for (int i = 0; i < arr_strJson.length(); ++i) {
-                //rec todos los datos de una instancia servicio
-                rec = arr_strJson.getJSONObject(i);
+                //dataHistoria todos los datos de una instancia servicio
+                dataHistoria = arr_strJson.getJSONObject(i);
 
-                //datos tiene los datos basicos
-                datos = new JSONObject(rec.toString());
-                Comentario = (String) datos.getString("reseñaComentario");
-                Puntaje = (String) datos.getString("reseñaPuntaje");
-                instanciaServicioJSON = (String) datos.getString("instanciaServicio");
+                //jsonReseniaCliente tiene el data de reseña hecho al proveedor
+                jsonReseniaProveedor = new JSONObject(dataHistoria.getString("reseñaCliente"));
+                Comentario = (String) jsonReseniaProveedor.getString("reseñaComentario");
+                Puntaje = (String) jsonReseniaProveedor.getString("reseñaPuntaje");
 
-                //datos2 tiene los datos de la instanciaServicio
-                datos2 = new JSONObject(instanciaServicioJSON);
-                Costo = (String) datos2.getString("instanciaServicioCosto");
-                Distancia = (String) datos2.getString("instanciaServicioDistancia");
-                Fecha = (String) datos2.getString("instanciaServicioFechaInicio");
 
-                UbicacionJSON = (String) datos2.getString("ubicacion");
-                //datos3 tiene los datos de la ubicacion
-                datos3 = new JSONObject(UbicacionJSON);
-                LatitudO = (String) datos3.getString("latitud");
-                LongitudO = (String) datos3.getString("longitud");
 
-                UbicacionJSON = (String) datos2.getString("ubicacionDestino");
-                //datos3 tiene los datos de la ubicacion
-                datos3 = new JSONObject(UbicacionJSON);
-                LatitudD = (String) datos3.getString("latitud");
-                LongitudD = (String) datos3.getString("longitud");
+
+                Costo = (String) dataHistoria.getString("instanciaServicioCosto");
+                Distancia = (String) dataHistoria.getString("instanciaServicioDistancia");
+                Fecha = (String) dataHistoria.getString("instanciaServicioFechaFin");
+
+                try {
+                    Long longFecha = Long.parseLong(Fecha);
+                    final Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(longFecha);
+                    final SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+                    Fecha = f.format(cal.getTime());
+                    //System.out.println(f.format(cal.getTime()))
+                }catch (Exception e){
+                    Log.d(TAG, "Problema parseando la fecha: " + e);
+                }
+
+
+                JSONObject jsonUbicacion = new JSONObject(dataHistoria.getString("ubicacion"));
+                latOrigen = jsonUbicacion.getString("latitud");
+                longOrigen = jsonUbicacion.getString("longitud");
+
+                jsonUbicacion = new JSONObject(dataHistoria.getString("ubicacionDestino"));
+                latDestino = jsonUbicacion.getString("latitud");
+                longDestino = jsonUbicacion.getString("longitud");
 
                 double lat;
                 double lon;
 
-                lat = Double.parseDouble(LatitudO);
-                lon = Double.parseDouble(LongitudO);
+                lat = Double.parseDouble(latOrigen);
+                lon = Double.parseDouble(longOrigen);
                 String dirO = "-";
                 if ((lat != 0)&&(lon != 0)){
                     dirO = getAddressFromLatLng(lat, lon);
                 }
 
-                lat = Double.parseDouble(LatitudD);
-                lon = Double.parseDouble(LongitudD);
+                lat = Double.parseDouble(latDestino);
+                lon = Double.parseDouble(longDestino);
                 String dirD = "-";
                 if ((lat != 0)&&(lon != 0)){
                     dirD = getAddressFromLatLng(lat, lon);

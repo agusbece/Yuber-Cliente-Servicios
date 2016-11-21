@@ -27,7 +27,7 @@
         <-
 
                      -->
-        <activity android:name="yuber.yuberClienteServicios.activity.ServiciosActivity">
+        <activity android:name="yuber.yuberClienteServicios.activity.Intro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,7 +69,7 @@
         -->
         <activity android:name="yuber.yuberClienteServicios.activity.MainActivity"/>
 
-        <activity android:name="yuber.yuberClienteServicios.activity.Intro"/>
+        <activity android:name="yuber.yuberClienteServicios.activity.ServiciosActivity"/>
 
 
     </application>

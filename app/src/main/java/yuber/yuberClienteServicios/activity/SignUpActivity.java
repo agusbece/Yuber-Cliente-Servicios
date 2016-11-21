@@ -38,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     public static final String PUBLISHABLE_KEY = "pk_test_4vfEzEuVKYT0Wzk5uvh3WEpa";
     private static final String TAG = "SignUpActivity";
 
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
     private String Puerto = "8080";
 
     private EditText nameText;
@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     //======STRIPE ==================
-    Button saveButton;
+    //Button saveButton;
     EditText cardNumber;
     EditText cvc;
     Spinner monthSpinner;
@@ -63,6 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        Ip = getResources().getString(R.string.IP);
 
         Button signupButton = (Button) findViewById(R.id.btn_signup);
         TextView loginLink = (TextView) findViewById(R.id.link_login);
@@ -104,13 +105,6 @@ public class SignUpActivity extends AppCompatActivity {
         this.monthSpinner = (Spinner) findViewById(R.id.expMonth);
         this.yearSpinner = (Spinner) findViewById(R.id.expYear);
         this.currencySpinner = (Spinner) findViewById(R.id.currency);
-        this.saveButton = (Button) findViewById(R.id.save);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveCreditCard();
-            }
-        });
     }
 
     public void signup() {
@@ -138,6 +132,7 @@ public class SignUpActivity extends AppCompatActivity {
         //*****************  Consulta a BD si existe el user ********************//
         String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Cliente/RegistrarCliente/";
         JSONObject obj = new JSONObject();
+        JSONObject objVert = new JSONObject();
         try {
             obj.put("usuarioDireccion", address);
             obj.put("usuarioContraseña", password);
@@ -148,13 +143,16 @@ public class SignUpActivity extends AppCompatActivity {
             obj.put("usuarioCorreo", email);
             obj.put("usuarioCiudad", ciudad);
             obj.put("estado", "OK");
+
+            objVert.put("tipoVertical", "Transporte");
+            objVert.put("cliente", obj);
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
         AsyncHttpClient client = new AsyncHttpClient();
         ByteArrayEntity entity = null;
         try {
-            entity = new ByteArrayEntity(obj.toString().getBytes("UTF-8"));
+            entity = new ByteArrayEntity(objVert.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -162,11 +160,13 @@ public class SignUpActivity extends AppCompatActivity {
         client.post(null, url, entity, "application/json", new AsyncHttpResponseHandler(){
             @Override
             public void onSuccess(String response) {
-                if (response.contains("Ok")){
+                if (response.contains("true")){
+                    //Mando el token de la tarjeta
+                    saveCreditCard();
                     //llamo a login para que cree la session
                     login();
                 }else{
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                 }
             }
             @Override
@@ -325,6 +325,26 @@ public class SignUpActivity extends AppCompatActivity {
             reEnterPasswordText.setError(null);
         }
 
+        Card card = new Card(
+                cardNumber.getText().toString(),
+                getInteger(this.monthSpinner),
+                getInteger(this.yearSpinner),
+                cvc.getText().toString());
+        card.setCurrency(getCurrency());
+
+        if (!card.validateNumber()) {
+            valid = false;
+            handleError("El número de tarjeta ingresado es inválido");
+        }
+        else if (!card.validateExpiryDate()) {
+             valid = false;
+             handleError("La fecha de vencimiento ingresada es inválida");
+         }
+        else if (!card.validateCVC()) {
+             valid = false;
+             handleError("El código CVC ingresado es inválido");
+         }
+
         return valid;
     }
 
@@ -344,14 +364,36 @@ public class SignUpActivity extends AppCompatActivity {
 
         boolean validation = card.validateCard();
         if (validation) {
-            startProgress();
+            //startProgress();
             new Stripe().createToken(
                     card,
                     PUBLISHABLE_KEY,
                     new TokenCallback() {
                         public void onSuccess(Token token) {
-                            //getTokenList().addToList(token);
-                            finishProgress();
+                            String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Cliente/AsociarMecanismoDePago/" + emailText.getText().toString() + "," + token.getId().toString();
+                            AsyncHttpClient client = new AsyncHttpClient();
+                            ByteArrayEntity entity = null;
+                            client.get(null, url, new AsyncHttpResponseHandler(){
+                                @Override
+                                public void onSuccess(String response) {
+                                    if (response.contains("Ok")){
+                                        //nada
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(int statusCode, Throwable error, String content){
+                                    if(statusCode == 404){
+                                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                                    }else if(statusCode == 500){
+                                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                            //finishProgress();
                         }
                         public void onError(Exception error) {
                             handleError(error.getLocalizedMessage());
@@ -359,13 +401,13 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     });
         } else if (!card.validateNumber()) {
-            handleError("The card number that you entered is invalid");
+            handleError("El número de tarjeta ingresado es inválido");
         } else if (!card.validateExpiryDate()) {
-            handleError("The expiration date that you entered is invalid");
+            handleError("La fecha de vencimiento ingresada es inválida");
         } else if (!card.validateCVC()) {
-            handleError("The CVC code that you entered is invalid");
+            handleError("El código CVC ingresado es inválido");
         } else {
-            handleError("The card details that you entered are invalid");
+            handleError("Los detalles de la tarjeta ingresada son inválidos");
         }
     }
 
@@ -412,10 +454,5 @@ public class SignUpActivity extends AppCompatActivity {
         else
             return selected.toLowerCase();
     }
-
-    public void saveForm(View button) {
-        this.saveCreditCard();
-    }
-
 
 }

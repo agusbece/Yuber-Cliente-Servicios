@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Yuber Cliente</string>
+    <string name="app_name">Yuber Cliente Servicios</string>
     <string name="registrarse">Registrarse</string>
     <string name="login">Login</string>
     <string name="title_activity_login">Sign in</string>
@@ -47,7 +47,6 @@
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_servicios</item>
         <item>@string/nav_item_map</item>
         <item>@string/nav_item_historic</item>
     </string-array>
@@ -66,6 +65,7 @@
 
 
 
+    <string name="IP">54.203.12.195</string>
 
 
 

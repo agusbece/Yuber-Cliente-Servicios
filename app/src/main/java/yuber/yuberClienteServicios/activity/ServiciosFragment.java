@@ -31,7 +31,7 @@ import yuber.yuberClienteServicios.adapter.ServiciosAdapter;
 
 public class ServiciosFragment extends Fragment {
 
-    private String Ip = "54.213.51.6";
+    private String Ip = "";
     private String Puerto = "8080";
 
 
@@ -64,13 +64,15 @@ public class ServiciosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_servicios, container, false);
+        Ip = getResources().getString(R.string.IP);
 
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
         rv.setHasFixedSize(true);
 
         //LO NUEVO QUE HICE 30-OCT
 
-        prepareMovieData();
+        obtenerServiciosDisponibles();
+
         ServiciosAdapter adapter = new ServiciosAdapter(servicioList);
 
 
@@ -90,7 +92,7 @@ public class ServiciosFragment extends Fragment {
         rv.setItemAnimator(new DefaultItemAnimator());
 
 /*      QUE ONDA CON ESTO? NO ES MAS NECESARIO?
-        rv.addOnItemTouchListener(new RecyclerTouchListener(rootView.getApplicationContext(), rv, new RecyclerTouchListener.ClickListener() {
+        rv.addOnItemTouchListener(new HistoricRecyclerTouchListener(rootView.getApplicationContext(), rv, new HistoricRecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 //Movie movie = movieList.get(position);
@@ -106,17 +108,14 @@ public class ServiciosFragment extends Fragment {
 
 */
 
-        rv.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), rv, new RecyclerTouchListener.ClickListener() {
+        rv.addOnItemTouchListener(new HistoricRecyclerTouchListener(getActivity().getApplicationContext(), rv, new HistoricRecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
               cambiarAMapa(position);
-
-                // set the toolbar textNombreServicio
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
             }
         }));
 
@@ -148,7 +147,7 @@ public class ServiciosFragment extends Fragment {
     }
 
 
-    private void prepareMovieData() {
+    private void obtenerServiciosDisponibles() {
 
         String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Servicios/ObtenerServicios/Transporte" ;
         AsyncHttpClient client = new AsyncHttpClient();
@@ -198,6 +197,54 @@ public class ServiciosFragment extends Fragment {
         }
     }
 
+
+
+/*
+
+    private void obtenerServiciosDisponibles() {
+        Movie movie = new Movie("Auto", "5 km", "$250");
+        movieList.add(movie);
+
+
+        movie = new Movie("Moto", "4 km", "$200");
+        movieList.add(movie);
+
+        movie = new Movie("Limusina", "2,5 km", "$125");
+        movieList.add(movie);
+
+        movie = new Movie("Helicoptero", "3,5 km", "$175");
+        movieList.add(movie);
+
+        movie = new Movie("Tren", "1 km", "$50");
+        movieList.add(movie);
+
+        movie = new Movie("Bicicleta", "10 km", "$500");
+        movieList.add(movie);
+
+        movie = new Movie("Bote", "1 km", "$50");
+        movieList.add(movie);
+
+        movie = new Movie("Monopatin", "12 km", "$600");
+        movieList.add(movie);
+
+        movie = new Movie("Taxi", "3 km", "$150");
+        movieList.add(movie);
+
+        movie = new Movie("MotoTaxi", "5 km", "$250");
+        movieList.add(movie);
+
+        movie = new Movie("10/01/2016", "2,2km", "$110");
+        movieList.add(movie);
+
+        movie = new Movie("19/07/2015", "2 km", "$100");
+        movieList.add(movie);
+
+        movie = new Movie("01/01/2015", "12 km", "$600");
+        movieList.add(movie);
+
+        //mAdapter.notifyDataSetChanged();
+    }
+*/
 
 
 }
