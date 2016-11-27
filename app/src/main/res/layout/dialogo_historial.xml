@@ -86,7 +86,7 @@
             android:weightSum="2">
 
             <TextView
-                android:text="Origen"
+                android:text="Ubicación"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -94,31 +94,6 @@
 
             <TextView
                 android:id="@+id/text_hist_origen_variable"
-                android:text="$$"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:textColor="@color/textColorPrimaryBlack" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_destino"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/normal_padding"
-            android:weightSum="2">
-
-            <TextView
-                android:text="Destino"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/textColorPrimaryBlack" />
-
-            <TextView
-                android:id="@+id/text_hist_destino_variable"
                 android:text="$$"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
