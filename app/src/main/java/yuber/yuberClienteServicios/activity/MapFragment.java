@@ -653,6 +653,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 break;
             case YUBER_TRABAJANDO:
                 mButtonLlammarUber.setEnabled(false);
+                textoDialogoChico = (TextView) actualFragment.getView().findViewById(R.id.textEstadoFragmentoYubConfir);
+                textoDialogoChico.setText("Trabajando...");
                 break;
             default:
                 break;

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -52,15 +51,10 @@ public class MiFirebaseMessagingService extends FirebaseMessagingService {
                 String jsonData = gson.toJson(data);
                 mandarTerminoViajeMapFragment(jsonData);
             }
-
-
-
         }
-
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-
         }
 
 

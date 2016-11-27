@@ -149,7 +149,7 @@ public class ServiciosFragment extends Fragment {
 
     private void obtenerServiciosDisponibles() {
 
-        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Servicios/ObtenerServicios/Transporte" ;
+        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Servicios/ObtenerServicios/On-Site" ;
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(null, url, new AsyncHttpResponseHandler(){
             @Override

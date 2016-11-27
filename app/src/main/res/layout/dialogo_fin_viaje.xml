@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/normal_padding"
         android:weightSum="2"
-        android:layout_below="@+id/info_text">>
+        android:layout_below="@+id/info_text">
 
         <TextView
             android:text="Distancia"
@@ -70,7 +70,6 @@
             android:textColor="@color/textColorPrimaryBlack" />
     </LinearLayout>
 
-
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,9 +81,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="53dp"
         android:layout_marginEnd="53dp"
+        android:numStars="5"
         android:layout_below="@+id/layout_costo_fin_viaje"
-        android:stepSize="1"/>
-
+        android:stepSize="0.5"/>
 
     <Button
         android:id="@+id/boton_confirmar"

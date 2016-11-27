@@ -52,12 +52,10 @@ public class ServiciosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicios);
         Ip = getResources().getString(R.string.IP);
-        obtenerServiciosDisponibles();
+        agregarServicios();
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_recycler_view_servicios);
-
         mAdapter = new ServiciosAdapter(serviciosList);
-
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(),3);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -77,10 +75,6 @@ public class ServiciosActivity extends AppCompatActivity {
 
             }
         }));
-
-
-
-        //prepareMovieData();
     }
 
     private void pasarAIntro(int posicion) {
@@ -93,45 +87,14 @@ public class ServiciosActivity extends AppCompatActivity {
         editor.putInt(IdServicioKey, servicios.getID());
         editor.putString(ServiciosKey, jsonServicio);
         editor.commit();
-
         Intent homeIntent = new Intent(getApplicationContext(), MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
 
-
-    private void obtenerServiciosDisponibles() {
-
-
-        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Servicios/ObtenerServicios/On-Site" ;
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(null, url, new AsyncHttpResponseHandler(){
-            @Override
-            public void onSuccess(String response) {
-                SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString(ServiciosKey, response);
-                editor.commit();
-            }
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content){
-                if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                }else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
+    private void agregarServicios() {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
-        String Response = sharedpreferences.getString(ServiciosKey, "");
-        agregarItems(Response);
-    }
-
-
-    private void agregarItems(String response){
+        String response = sharedpreferences.getString(ServiciosKey, "");
         Servicios servicio;
         try {
             JSONArray arr_strJson = new JSONArray(response);
@@ -142,7 +105,6 @@ public class ServiciosActivity extends AppCompatActivity {
                 int tarifaBase = jsonServicio.getInt("servicioTarifaBase");
                 int precioKM = jsonServicio.getInt("servicioPrecioKM");
                 String nombre = jsonServicio.getString("servicioNombre");
-
                 //Agrego a la lista
                 servicio = new Servicios(id, tarifaBase, precioKM, nombre);
                 serviciosList.add(servicio);
@@ -152,33 +114,5 @@ public class ServiciosActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-    private void prepareMovieData() {
-
-        Servicios servicio = new Servicios(1,50,50,"Carpinteria");
-        serviciosList.add(servicio);
-
-        servicio = new Servicios(1,50,50,"Sanitario");
-        serviciosList.add(servicio);
-
-        servicio = new Servicios(1,50,50,"Electricista");
-        serviciosList.add(servicio);
-
-        servicio = new Servicios(1,50,50,"Jardineria");
-        serviciosList.add(servicio);
-
-        servicio = new Servicios(1,50,50,"Peluqueria");
-        serviciosList.add(servicio);
-
-        servicio = new Servicios(1,50,50,"Limpieza");
-        serviciosList.add(servicio);
-
-        servicio = new Servicios(1,50,50,"Informatica");
-        serviciosList.add(servicio);
-
-        mAdapter.notifyDataSetChanged();
-    }
 
 }

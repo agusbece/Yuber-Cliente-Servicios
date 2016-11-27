@@ -18,7 +18,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    /*
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+    */
+
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -42,8 +55,13 @@ dependencies {
 
     //http://greenrobot.org/eventbus/
     //compile 'org.greenrobot:eventbus:3.0.0'
+    //compile 'org.apache.camel:camel-jackson:2.11.1'
+
+    // https://mvnrepository.com/artifact/org.apache.camel/camel-jackson
+    //compile group: 'org.apache.camel', name: 'camel-jackson', version: '2.11.1'
+
+
 
 } // FIN  DEPENDENCIES
-
 
 apply plugin: 'com.google.gms.google-services'

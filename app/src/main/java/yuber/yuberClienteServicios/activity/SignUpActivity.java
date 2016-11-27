@@ -151,7 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
             obj.put("usuarioCiudad", ciudad);
             obj.put("estado", "OK");
 
-            objVert.put("tipoVertical", "Transporte");
+            objVert.put("tipoVertical", "On-Site");
             objVert.put("cliente", obj);
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
