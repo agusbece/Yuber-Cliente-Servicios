@@ -52,7 +52,6 @@ public class FragmentDialogYuberHistorial extends DialogFragment {
         TextView textoComentario = (TextView) v.findViewById(R.id.text_hist_costo_variable);
         TextView textoDistancia = (TextView) v.findViewById(R.id.text_hist_distancia_variable);
         TextView textoOrigen = (TextView) v.findViewById(R.id.text_hist_origen_variable);
-        TextView textoDestino = (TextView) v.findViewById(R.id.text_hist_destino_variable);
         RatingBar ratingBarPuntaje = (RatingBar) v.findViewById(R.id.ratingBarDialogHistorial);
         double puntaje = 0;
 
@@ -62,7 +61,6 @@ public class FragmentDialogYuberHistorial extends DialogFragment {
             textoFecha.setText(datos.getString("Fecha"));
             textoCosto.setText("$ " + datos.getString("Costo"));
             textoDistancia.setText(datos.getString("Distancia") + "Km");
-            textoDestino.setText(datos.getString("DireccionD"));
             textoOrigen.setText(datos.getString("DireccionO"));
             puntaje = datos.getDouble("Puntaje");
             if (puntaje > 5){
