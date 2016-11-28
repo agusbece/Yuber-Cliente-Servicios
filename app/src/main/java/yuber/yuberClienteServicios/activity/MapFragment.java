@@ -62,7 +62,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -127,11 +129,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     private enum mapState {ELIGIENDO_ORIGEN, BUSCANDO_YUBER, YUBER_EN_CAMINO, YUBER_TRABAJANDO}
 
-
+    MainActivity mainActivity;
     private mapState mActualState;
     private Fragment actualFragment = null;
     private int mIdServicioEnUso = -1;
     private int mIdInstanciaServicio;
+    private String punta;
 
     SharedPreferences sharedPreferences;
 
@@ -210,7 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         //PARA LA CREACION DE RUTAS
         // Initializing
         markerPoints = new ArrayList<LatLng>();
-
+        mainActivity = (MainActivity)getActivity();
 
         return v;
     } // FIN onCreate()
@@ -240,6 +243,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 displayView(mapState.ELIGIENDO_ORIGEN);
                 String puntosViaje = intent.getStringExtra("PUNTAJE_VIAJE");
                 enviarPuntaje(puntosViaje);
+                agregoALista(puntosViaje);
             }
             else if(ACTION_UBICACION_YUBER.equals(intent.getAction())) {
                 String jsonUbicacion = intent.getStringExtra("UBICACION");
@@ -250,6 +254,106 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             }
         }
     };
+
+
+    public void agregoALista(String puntaje){
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
+        String instanciaID = sharedpreferences.getString(InstanciaServicioIDKey, "");
+
+        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Servicios/ObtenerInstanciaServicio/" + instanciaID;
+        System.out.println("---"+url);
+        punta = puntaje;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(null, url, new AsyncHttpResponseHandler(){
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject json = new JSONObject(response);
+                    JSONObject ubicacion = new JSONObject(json.getString("ubicacion"));
+
+                    String costo = json.getString("instanciaServicioCosto");
+                    String fecha  = json.getString("instanciaServicioFechaInicio");
+                    Long longFecha = Long.parseLong(fecha);
+                    final Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(longFecha);
+                    final SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                    fecha = f.format(cal.getTime());
+
+
+                    float x = Float.valueOf(json.getString("instanciaServicioDistancia"));
+                    if (x < 0){
+                        x = x*-1;
+                    }
+                    x = x * 1000;
+                    int t = (int) x;
+                    String tiempo = obtenerTiempo(t);
+
+                    Double latO = ubicacion.getDouble("latitud");
+                    Double lonO = ubicacion.getDouble("longitud");
+                    String dirO = getAddressFromLatLng(latO, lonO);
+
+                    Historial hst = new Historial("Sin comentario", punta, costo, tiempo, dirO, "-", fecha);
+                    System.out.println("-----"+hst.toString());
+
+                    System.out.println(hst);
+
+                    mainActivity.agregarEnHistorial(hst);
+                } catch (JSONException e) {
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Throwable error, String content){
+            }
+        });
+    }
+
+    public String obtenerTiempo(int tiempo){
+        String horas = "00";
+        String minutos = "00";
+        String segundos = "00";
+        int resto = tiempo;
+
+        int h = resto / (24*60);
+        resto = resto % (24*60);
+        horas = String.valueOf(h);
+        if(h < 10) {
+            horas = "0" + horas;
+        }
+
+        int m = resto / (60);
+        resto = resto % (24*60);
+        minutos = String.valueOf(m);
+        if(m < 10) {
+            minutos = "0" + minutos;
+        }
+
+        int s = resto;
+        segundos = String.valueOf(s);
+        if(s < 10) {
+            segundos = "0" + segundos;
+        }
+
+        return (horas + ":" + minutos + ":" + segundos);
+    }
+
+    private String getAddressFromLatLng(double lat, double lon) {
+        Geocoder geocoder = new Geocoder( mainActivity );
+        String address = "";
+        try {
+            address =geocoder
+                    .getFromLocation( lat, lon, 1 )
+                    .get( 0 ).getAddressLine( 0 ) ;
+        } catch (IOException e ) {
+            // this is the line of code that sends a real error message to the  log
+            Log.e("ERROR", "ERROR IN CODE: " + e.toString());
+            // this is the line that prints out the location in the code where the error occurred.
+            e.printStackTrace();
+            return "ERROR_IN_CODE";
+        }
+        return address;
+    }
+
 
     private void mostrarMiUbicacion(){
         // IMPLEMENTAR LO DE ARRIBA EMPIEZA_VIAJE

@@ -3,6 +3,7 @@ package yuber.yuberClienteServicios.activity;
 /**
  * Created by Agustin on 28-Oct-16.
  */
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Geocoder;
@@ -14,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;;import com.loopj.android.http.AsyncHttpClient;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -22,15 +25,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import yuber.yuberClienteServicios.R;
 import yuber.yuberClienteServicios.adapter.HistorialAdapter;
+
+;
 
 public class HistoricFragment extends Fragment {
 
@@ -62,7 +66,15 @@ public class HistoricFragment extends Fragment {
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view_historic);
         rv.setHasFixedSize(true);
 
-        obtenerServiciosDisponibles();
+        MainActivity mainActivity = (MainActivity)getActivity();
+        List<Historial> lista = mainActivity.getListaHistorial();
+        Historial htemp;
+        Iterator<Historial> it = lista.iterator();
+        while (it.hasNext()) {
+            htemp = it.next();
+            historialList.add(htemp);
+        }
+
         HistorialAdapter adapter = new HistorialAdapter(historialList);
 
         rv.setAdapter(adapter);

@@ -61,27 +61,18 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Historial historial = historialList.get(position);
-
-        String[] splitDir = historial.getDireccionOrigen().split(" ");
-        String numero = "";
-        String calle = "";
-
-        try{
-            numero = splitDir[splitDir.length - 1];
+        String Direccion = "";
+        try {
+            String[] splitDir = historial.getDireccionOrigen().split(" ");
+            String numero = splitDir[splitDir.length - 1];
+            String calle = splitDir[splitDir.length - 2];
+            Direccion = calle + " " + numero;
         }catch (Exception e){
-            Log.d(TAG, "Error parseando strings: " + e);
-            numero = "";
+            Direccion = historial.getDireccionOrigen();
         }
-        try{
-            calle = splitDir[splitDir.length - 2];
-        }catch (Exception e){
-            Log.d(TAG, "Error parseando strings: " + e);
-            calle = "";
-        }
-        String Direccion = calle + " " + numero;
+        fecha = historial.getFecha();
 
         String tiempo = historial.getDistancia();
-        Log.d(TAG,"El tiempo de historial: " + tiempo);
         try {
             float x = Float.valueOf(tiempo);
             if (x < 0) {
@@ -89,11 +80,11 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.MyVi
             }
             int t = (int) x;
             tiempo = obtenerTiempo(t);
-        }catch (Exception e){        }
+        }catch (Exception e){
+        }
 
         titulo = "Ubicación: " + Direccion;
         subTitulo = "Tiempo: " + tiempo + "   Costo: $" + historial.getCosto();
-        fecha = historial.getFecha();
         String[] fechaSplit = fecha.split(" ");
 
         holder.titulo.setText(titulo);

@@ -91,23 +91,6 @@ public class ServiciosFragment extends Fragment {
         rv.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         rv.setItemAnimator(new DefaultItemAnimator());
 
-/*      QUE ONDA CON ESTO? NO ES MAS NECESARIO?
-        rv.addOnItemTouchListener(new HistoricRecyclerTouchListener(rootView.getApplicationContext(), rv, new HistoricRecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                //Movie movie = movieList.get(position);
-               //Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity().getApplicationContext(), position + " is selected!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-
-*/
-
         rv.addOnItemTouchListener(new HistoricRecyclerTouchListener(getActivity().getApplicationContext(), rv, new HistoricRecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -126,6 +109,7 @@ public class ServiciosFragment extends Fragment {
 
 
     public void cambiarAMapa(int id){
+        System.out.print("--------");
         Servicios servicios = servicioList.get(id);
         Gson gson = new Gson();
         String jsonServicio = gson.toJson(servicios);
@@ -136,14 +120,14 @@ public class ServiciosFragment extends Fragment {
         editor.commit();
         Toast.makeText(getActivity().getApplicationContext(), "Ha seleccionado viajar en " + servicios.getNombre() , Toast.LENGTH_SHORT).show();
 
-
-
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.setmIdServicio(servicios.getID());
         mainActivity.displayView(1);
-        //Intent goToMainIntent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
-       // goToMainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //startActivity(goToMainIntent);
+
+        mainActivity.cargarHistorial(servicios.getID());
+
+        System.out.print("--------");
+        System.out.println(mainActivity.getListaHistorial());
     }
 
 
@@ -197,54 +181,6 @@ public class ServiciosFragment extends Fragment {
         }
     }
 
-
-
-/*
-
-    private void obtenerServiciosDisponibles() {
-        Movie movie = new Movie("Auto", "5 km", "$250");
-        movieList.add(movie);
-
-
-        movie = new Movie("Moto", "4 km", "$200");
-        movieList.add(movie);
-
-        movie = new Movie("Limusina", "2,5 km", "$125");
-        movieList.add(movie);
-
-        movie = new Movie("Helicoptero", "3,5 km", "$175");
-        movieList.add(movie);
-
-        movie = new Movie("Tren", "1 km", "$50");
-        movieList.add(movie);
-
-        movie = new Movie("Bicicleta", "10 km", "$500");
-        movieList.add(movie);
-
-        movie = new Movie("Bote", "1 km", "$50");
-        movieList.add(movie);
-
-        movie = new Movie("Monopatin", "12 km", "$600");
-        movieList.add(movie);
-
-        movie = new Movie("Taxi", "3 km", "$150");
-        movieList.add(movie);
-
-        movie = new Movie("MotoTaxi", "5 km", "$250");
-        movieList.add(movie);
-
-        movie = new Movie("10/01/2016", "2,2km", "$110");
-        movieList.add(movie);
-
-        movie = new Movie("19/07/2015", "2 km", "$100");
-        movieList.add(movie);
-
-        movie = new Movie("01/01/2015", "12 km", "$600");
-        movieList.add(movie);
-
-        //mAdapter.notifyDataSetChanged();
-    }
-*/
 
 
 }
