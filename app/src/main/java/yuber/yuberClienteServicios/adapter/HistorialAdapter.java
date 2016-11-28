@@ -80,18 +80,62 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.MyVi
         }
         String Direccion = calle + " " + numero;
 
-        titulo = "Destino: " + Direccion;
-        subTitulo = "Distancia: " + historial.getDistancia() + "Km   Costo: $" + historial.getCosto();
+        String tiempo = historial.getDistancia();
+        Log.d(TAG,"El tiempo de historial: " + tiempo);
+        try {
+            float x = Float.valueOf(tiempo);
+            if (x < 0) {
+                x = x * -1;
+            }
+            int t = (int) x;
+            tiempo = obtenerTiempo(t);
+        }catch (Exception e){        }
+
+        titulo = "Ubicación: " + Direccion;
+        subTitulo = "Tiempo: " + tiempo + "   Costo: $" + historial.getCosto();
         fecha = historial.getFecha();
+        String[] fechaSplit = fecha.split(" ");
 
         holder.titulo.setText(titulo);
         holder.subtitulo.setText(subTitulo);
-        holder.año.setText(fecha);
+        holder.año.setText(fechaSplit[0]);
     }
 
     @Override
     public int getItemCount() {
         return historialList.size();
     }
+
+    public String obtenerTiempo(int tiempo){
+        Log.d(TAG,"El tiempo es: " + tiempo);
+
+        String horas = "00";
+        String minutos = "00";
+        String segundos = "00";
+        int resto = tiempo;
+
+        int h = resto / (24*60);
+        resto = resto % (24*60);
+        horas = String.valueOf(h);
+        if(h < 10) {
+            horas = "0" + horas;
+        }
+
+        int m = resto / (60);
+        resto = resto % (24*60);
+        minutos = String.valueOf(m);
+        if(m < 10) {
+            minutos = "0" + minutos;
+        }
+
+        int s = resto;
+        segundos = String.valueOf(s);
+        if(s < 10) {
+            segundos = "0" + segundos;
+        }
+
+        return (horas + ":" + minutos + ":" + segundos);
+    }
+
 
 }

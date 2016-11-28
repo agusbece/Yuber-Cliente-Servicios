@@ -66,10 +66,10 @@ public class FragmentDialogYuberDisponible extends DialogFragment {
 
         TextView textoNombreProv = (TextView) v.findViewById(R.id.text_dialog_yub_disp_nombre);
         TextView textoAppellidoProv = (TextView) v.findViewById(R.id.text_dialog_yub_disp_apellido);
-        TextView textoMarcaModProv = (TextView) v.findViewById(R.id.text_dialog_yub_disp_marca);
         TextView textoTelefonoProv = (TextView) v.findViewById(R.id.text_dialog_yub_disp_telefono);
         RatingBar ratingBarPuntajeProv = (RatingBar) v.findViewById(R.id.ratingBarYuberDispo);
-
+        ratingBarPuntajeProv.setMax(5);
+        ratingBarPuntajeProv.setIsIndicator(true);
         String stringPuntaje = "";
         try {
             textoNombreProv.setText(mProveedor.getString("usuarioNombre"));
@@ -92,7 +92,6 @@ public class FragmentDialogYuberDisponible extends DialogFragment {
 
 
         Button botonAceptar = (Button) v.findViewById(R.id.boton_aceptar_yuber);
-        Button botonCancelar = (Button) v.findViewById(R.id.boton_cancelar_yuber);
 
         Log.d(TAG, "Se creo el dialogo con el login");
 
@@ -104,17 +103,6 @@ public class FragmentDialogYuberDisponible extends DialogFragment {
                         dismiss();
                     }
                 }
-        );
-
-        botonCancelar.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Loguear...
-                        dismiss();
-                    }
-                }
-
         );
 
         return builder.create();

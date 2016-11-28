@@ -1,6 +1,7 @@
 package yuber.yuberClienteServicios.activity;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +18,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +41,12 @@ public class FragmentDrawer extends Fragment {
     private View containerView;
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
+    private TextView nombreApellido;
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String EmailKey = "emailKey";
 
     public FragmentDrawer() {
-
     }
 
     public void setDrawerListener(FragmentDrawerListener listener) {
@@ -72,6 +80,12 @@ public class FragmentDrawer extends Fragment {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
+
+
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
+        String nombre = sharedpreferences.getString(EmailKey, "");
+        nombreApellido = (TextView) layout.findViewById(R.id.text_nombre_apellido);
+        nombreApellido.setText(nombre);
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
         recyclerView.setAdapter(adapter);

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:paddingTop="@dimen/dialog_body"
+    android:paddingTop="10dp"
     android:paddingLeft="@dimen/dialog_body">
 
 
@@ -20,69 +20,92 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
-     <LinearLayout
-         android:id="@+id/layout_dialogo_llego_yuber"
-         android:orientation="horizontal"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/yuber_en_camino"
-         android:paddingBottom="@dimen/normal_padding"
-         android:weightSum="2">
+    <RelativeLayout
+        android:id="@+id/layout_dialogo_llego_yuber"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yuber_en_camino"
+        android:paddingBottom="@dimen/normal_padding">
 
 
 
 
-         <LinearLayout
-             android:orientation="vertical"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-             <TextView
-                 android:id="@+id/text_dialog_yub_disp_nombre"
-                 android:text="Nombre"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1"
-                 android:textColor="@color/textColorSecondaryBlack"/>
+            <TextView
+                android:id="@+id/text_dialog_yub_disp_nombre"
+                android:text="Nombre"
+                android:layout_width="match_parent"
+                android:paddingBottom="6dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColorSecondaryBlack"/>
 
-             <TextView
-                 android:id="@+id/text_dialog_yub_disp_apellido"
-                 android:text="Apellido"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:textColor="@color/textColorSecondaryBlack"/>
+            <TextView
+                android:id="@+id/text_dialog_yub_disp_apellido"
+                android:text="Apellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColorSecondaryBlack"/>
 
-         </LinearLayout>
+        </LinearLayout>
 
-         <LinearLayout
-             android:orientation="vertical"
-             android:layout_width="0dp"
-             android:layout_height="match_parent"
-             android:layout_weight="1"
-             android:gravity="center_vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dialog_body"
+            android:gravity="center_vertical">
 
-             <RatingBar
-                 android:id="@+id/ratingBarYuberDispo"
-                 style="?android:attr/ratingBarStyleSmall"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginRight="53dp"
-                 android:layout_marginEnd="53dp"
-                 android:fillViewport="true"
-                 />
-         </LinearLayout>
+            <RatingBar
+                android:id="@+id/ratingBarYuberDispo"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar.Indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:progressTint="@color/colorAccent"
+                android:secondaryProgressTint="@android:color/transparent"
+                />
+        </LinearLayout>
 
 
-     </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_below="@+id/layout3_dialogo_llego_yuber"
+        android:gravity="center_vertical|right"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="6dp"
+        >
+
+        <Button
+            android:id="@+id/boton_aceptar_yuber"
+            android:text="ACEPTAR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_marginLeft="0dp" />
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layout3_dialogo_llego_yuber"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_dialogo_llego_yuber"
         android:paddingBottom="@dimen/normal_padding"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:layout_below="@+id/layout_dialogo_llego_yuber"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/text_dialog_yub_disp_telefono"
@@ -92,39 +115,6 @@
             android:layout_weight="1"
             android:textColor="@color/textColorSecondaryBlack" />
 
-        <TextView
-            android:id="@+id/text_dialog_yub_disp_marca"
-            android:text="Marca/modelo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/textColorSecondaryBlack" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_below="@+id/layout3_dialogo_llego_yuber"
-        android:gravity="center_vertical|right"
-        android:layout_marginBottom="2dp">
-
-        <Button
-            android:id="@+id/boton_cancelar_yuber"
-            android:text="CANCELAR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_marginRight="@dimen/normal_padding"/>
-
-        <Button
-            android:id="@+id/boton_aceptar_yuber"
-            android:text="ACEPTAR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_marginRight="12dp"
-            android:layout_marginLeft="0dp" />
     </LinearLayout>
 
 

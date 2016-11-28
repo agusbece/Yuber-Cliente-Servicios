@@ -49,7 +49,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 
-
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
@@ -66,7 +65,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Handler;
 
 import yuber.yuberClienteServicios.R;
 
@@ -179,58 +177,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-// <editor-fold defaultstate="collapsed" desc="Boton Ok eliminado">
-        /*
-        //seteando listener en boton OK ----> to be deeleted
-        Button botonOK = (Button) v.findViewById(R.id.button3);
-        botonOK.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                // Checks, whether start and end locations are captured
-                if(markerPoints.size() >= 2){
-                    LatLng origin = markerPoints.get(0);
-                    LatLng dest = markerPoints.get(1);
-
-                    // Getting URL to the Google Directions API
-                    String url = getDirectionsUrl(origin, dest);
-
-                    DownloadTask downloadTask = new DownloadTask();
-
-                    // Start downloading json data from Google Directions API
-                    downloadTask.execute(url);
-                }
-
-                /*
-                switch (mActualState) {
-                    case ELIGIENDO_ORIGEN:
-                        //mostrarViajeFinalizado();
-                        LatLng latLng = mOrigenMarker.getPosition();;
-                        mOrigenMarker.remove();
-                        MarkerOptions options;
-                        options = new MarkerOptions().position(latLng);
-                        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_52));
-                        mOrigenMarker = googleMap.addMarker(options);
-                        mOrigenMarker.setTitle("Origen");
-
-                        break;
-                    case BUSCANDO_YUBER:
-                        String test = "{\"usuarioPromedioPuntaje\":2.5,\"usuarioCorreo\":\"maxi@gmail.com\", \"usuarioTelefono\":\"098839498\",\"usuarioNombre\":\"ElMasi\",\"usuarioApellido\":\"Barnech\", \"marca\":\"BMW\", \"modelo\":\"320\",\"estado\":\"Ok\"}";
-                        mostrarDialAceptarProveedor(test);
-                        //login_user()
-                        break;
-                    case DESTINO_ELEGIDO:
-                        enviarPuntaje("19");
-                        break;
-                    default:
-                        break;
-                }
-                */
-
-        //});
-        // </editor-fold>
-
-
 
         // PARA TESTING... SEGURAMENTE SIN USO FUTURO, PODRIA SER ELIMINADO O REUSADO EN OTRO CODIGO
         // Instantiate Progress Dialog object
@@ -416,11 +362,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
 
-/*
-        mCurrentLocation = LocationServices
-                .FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
-*/
 
     /*
         podria usarse para hallar la velociad y mandarlo?
@@ -611,7 +552,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         return address;
     }
 
-
     private void displayView(mapState estado) {
         mActualState = estado;
         TextView textoDialogoChico;
@@ -673,7 +613,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 TemporizadorProv temp = new TemporizadorProv();
                 temp.esperarXsegundos(60);
                 Intent intent = new Intent(ACTION_CONTADOR_FINALIZO);
-                LocalBroadcastManager.getInstance(getActivity().getBaseContext()).sendBroadcast(intent);
+                try{
+                    LocalBroadcastManager.getInstance(getActivity().getBaseContext()).sendBroadcast(intent);
+                }catch (Exception e){
+                    Log.d(TAG,"Se rompio al finalizar el contador del MapFragment" + e);
+                }
             }
         }).start();
     }
@@ -684,7 +628,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             Toast.makeText(getActivity().getApplicationContext(), "Ningun Yuber acepto tu solicitud", Toast.LENGTH_LONG).show();
         }
     }
-
 
     private View.OnClickListener createListenerBottomButton(){
         View.OnClickListener clickListtener = new View.OnClickListener() {
@@ -715,12 +658,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         return clickListtener;
     }
 
-
-
-
     private void mostrarViajeFinalizado(String datosViaje){
-
-        //A USARSE EN UN FUTURO PARA MANDAR ARGUMENTOS
         Bundle args = new Bundle();
         args.putString("datosViaje", datosViaje);
         FragmentDialogFinViaje dialogoFinViajeYCalificar = new FragmentDialogFinViaje();
@@ -729,15 +667,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     }
 
     private void mostrarDialAceptarProveedor(String jProveedor){
-
         Bundle args = new Bundle();
         args.putString("datos", jProveedor);
         FragmentDialogYuberDisponible newFragmentDialog = new FragmentDialogYuberDisponible();
         newFragmentDialog.setArguments(args);
+        newFragmentDialog.setCancelable(false);
         newFragmentDialog.show(getActivity().getSupportFragmentManager(), "TAG");
-
     }
-
 
     private void pedirServicio(){
         mButtonLlammarUber.setEnabled(false);
@@ -831,14 +767,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         displayView(mapState.ELIGIENDO_ORIGEN);
     }
 
-
     private void guardarIdInstanciaServicio(int id) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(InstanciaServicioIDKey, id);
         editor.commit();
         mIdInstanciaServicio = id;
     }
-
 
     @Override
     public void onResume() {
@@ -863,7 +797,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-
 
     @Override
     public void onLocationChanged(Location location)
@@ -902,15 +835,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
-
     public void enviarPuntaje(String puntaje){
         String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Proveedor/PuntuarProveedor/" + puntaje + ",-," + mIdInstanciaServicio;
-        Log.d(TAG,"LA URIIIIIIII ES " + url);
+        Log.d(TAG,"LA URI ES " + url);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(null, url, new AsyncHttpResponseHandler(){
             @Override
             public void onSuccess(String response) {
-                Toast.makeText(getActivity().getApplicationContext(), "puntuo!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "puntuo!", Toast.LENGTH_LONG).show();
             }
             @Override
             public void onFailure(int statusCode, Throwable error, String content){

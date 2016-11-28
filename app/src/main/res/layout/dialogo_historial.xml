@@ -110,6 +110,8 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:clickable="false"
+            android:progressTint="@color/colorAccent"
+            android:secondaryProgressTint="@android:color/transparent"
             />
 
     </LinearLayout>

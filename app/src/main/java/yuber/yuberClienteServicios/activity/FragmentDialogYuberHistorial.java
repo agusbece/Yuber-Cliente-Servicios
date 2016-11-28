@@ -49,18 +49,31 @@ public class FragmentDialogYuberHistorial extends DialogFragment {
 
         TextView textoFecha = (TextView) v.findViewById(R.id.text_fecha_historial);
         TextView textoCosto = (TextView) v.findViewById(R.id.text_hist_costo_variable);
-        TextView textoComentario = (TextView) v.findViewById(R.id.text_hist_costo_variable);
-        TextView textoDistancia = (TextView) v.findViewById(R.id.text_hist_distancia_variable);
+        TextView textoTiempo = (TextView) v.findViewById(R.id.text_hist_distancia_variable);
         TextView textoOrigen = (TextView) v.findViewById(R.id.text_hist_origen_variable);
         RatingBar ratingBarPuntaje = (RatingBar) v.findViewById(R.id.ratingBarDialogHistorial);
+        ratingBarPuntaje.setIsIndicator(true);
         double puntaje = 0;
 
         try {
             datos = new JSONObject(datosHistorial);
-            textoComentario.setText(datos.getString("Comentario"));
             textoFecha.setText(datos.getString("Fecha"));
             textoCosto.setText("$ " + datos.getString("Costo"));
-            textoDistancia.setText(datos.getString("Distancia") + "Km");
+
+
+
+            String tiempo = datos.getString("Distancia");
+            try {
+                float x = Float.valueOf(tiempo);
+                if (x < 0) {
+                    x = x * -1;
+                }
+                int t = (int) x;
+                tiempo = obtenerTiempo(t);
+            }catch (Exception e){
+            }
+            textoTiempo.setText(tiempo);
+
             textoOrigen.setText(datos.getString("DireccionO"));
             puntaje = datos.getDouble("Puntaje");
             if (puntaje > 5){
@@ -80,10 +93,38 @@ public class FragmentDialogYuberHistorial extends DialogFragment {
                     }
                 }
         );
-
         return builder.create();
-
     }
+
+    public String obtenerTiempo(int tiempo){
+        String horas = "00";
+        String minutos = "00";
+        String segundos = "00";
+        int resto = tiempo;
+
+        int h = resto / (24*60);
+        resto = resto % (24*60);
+        horas = String.valueOf(h);
+        if(h < 10) {
+            horas = "0" + horas;
+        }
+
+        int m = resto / (60);
+        resto = resto % (24*60);
+        minutos = String.valueOf(m);
+        if(m < 10) {
+            minutos = "0" + minutos;
+        }
+
+        int s = resto;
+        segundos = String.valueOf(s);
+        if(s < 10) {
+            segundos = "0" + segundos;
+        }
+
+        return (horas + ":" + minutos + ":" + segundos);
+    }
+
 
 }
 

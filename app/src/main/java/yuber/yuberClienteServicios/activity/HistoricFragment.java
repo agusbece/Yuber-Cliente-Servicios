@@ -95,7 +95,7 @@ public class HistoricFragment extends Fragment {
         int idServicio = mainActivity.getmIdServicio();
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
         String email = sharedpreferences.getString(EmailKey, "");
-        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Cliente/ObtenerHistorial/" + email + "," + idServicio;
+        String url = "http://" + Ip + ":" + Puerto + "/YuberWEB/rest/Cliente/MisReseñasObtenidas/" + email + "," + idServicio;
         Log.d(TAG, "LA URL ES: " + url);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(null, url, new AsyncHttpResponseHandler(){
@@ -139,7 +139,7 @@ public class HistoricFragment extends Fragment {
 
 
         JSONObject dataHistoria;
-        JSONObject jsonReseniaProveedor;
+        JSONObject jsonInstanciaServicio;
 
         try {
             JSONArray arr_strJson = new JSONArray(response);
@@ -147,17 +147,16 @@ public class HistoricFragment extends Fragment {
                 //dataHistoria todos los datos de una instancia servicio
                 dataHistoria = arr_strJson.getJSONObject(i);
 
+                Log.d(TAG, "dataHistoria: " + dataHistoria);
+                //Comentario = jsonReseniaProveedor.getString("reseñaComentario");
+                double doublePuntaje = dataHistoria.getDouble("reseñaPuntaje");
+                Puntaje = "" + doublePuntaje;
+
                 //jsonReseniaCliente tiene el data de reseña hecho al proveedor
-                jsonReseniaProveedor = new JSONObject(dataHistoria.getString("reseñaCliente"));
-                Comentario = (String) jsonReseniaProveedor.getString("reseñaComentario");
-                Puntaje = (String) jsonReseniaProveedor.getString("reseñaPuntaje");
-
-
-
-
-                Costo = (String) dataHistoria.getString("instanciaServicioCosto");
-                Distancia = (String) dataHistoria.getString("instanciaServicioDistancia");
-                Fecha = (String) dataHistoria.getString("instanciaServicioFechaFin");
+                jsonInstanciaServicio = new JSONObject(dataHistoria.getString("instanciaServicio"));
+                Costo = jsonInstanciaServicio.getString("instanciaServicioCosto");
+                Distancia = jsonInstanciaServicio.getString("instanciaServicioDistancia");
+                Fecha = jsonInstanciaServicio.getString("instanciaServicioFechaFin");
 
                 try {
                     Long longFecha = Long.parseLong(Fecha);
@@ -171,11 +170,11 @@ public class HistoricFragment extends Fragment {
                 }
 
 
-                JSONObject jsonUbicacion = new JSONObject(dataHistoria.getString("ubicacion"));
+                JSONObject jsonUbicacion = new JSONObject(jsonInstanciaServicio.getString("ubicacion"));
                 latOrigen = jsonUbicacion.getString("latitud");
                 longOrigen = jsonUbicacion.getString("longitud");
 
-                jsonUbicacion = new JSONObject(dataHistoria.getString("ubicacionDestino"));
+                jsonUbicacion = new JSONObject(jsonInstanciaServicio.getString("ubicacionDestino"));
                 latDestino = jsonUbicacion.getString("latitud");
                 longDestino = jsonUbicacion.getString("longitud");
 
@@ -195,8 +194,12 @@ public class HistoricFragment extends Fragment {
                 if ((lat != 0)&&(lon != 0)){
                     dirD = getAddressFromLatLng(lat, lon);
                 }
+
+                Comentario = "";
+                Log.d(TAG, "Distancia es: " + Distancia);
                 //Agrego a la lista
                 historial = new Historial(Comentario, Puntaje, Costo, Distancia, dirO, dirD, Fecha);
+                Log.d(TAG, "Distancia es: " + historial.getDistancia());
                 historialList.add(historial);
 
             }

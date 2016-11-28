@@ -71,19 +71,18 @@
     </LinearLayout>
 
     <RatingBar
+        android:id="@+id/ratingBarFinViaje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ratingBarFinViaje"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
+        android:fillViewport="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="53dp"
-        android:layout_marginEnd="53dp"
-        android:numStars="5"
+        android:clickable="false"
         android:layout_below="@+id/layout_costo_fin_viaje"
-        android:stepSize="0.5"/>
+        android:stepSize="1"
+        android:progressTint="@color/colorAccent"
+        android:secondaryProgressTint="@android:color/transparent"
+        />
 
     <Button
         android:id="@+id/boton_confirmar"

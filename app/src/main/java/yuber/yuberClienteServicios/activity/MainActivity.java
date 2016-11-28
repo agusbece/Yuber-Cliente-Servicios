@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public static final String IdServicioKey = "IdServicioKey";
     public static final String ServiciosKey = "ServiciosKey";
     public static final String TAG = "MAIN ACTIVITY";
-
+    private String nombreApellido;
     private int mIdServicio = 0;
 
 
@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         return tokenSession;
     }
 
+    public String getNombtrUsuario(){
+        return nombreApellido;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
-
-
 
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_MULTI_PROCESS);
         emailSession = sharedpreferences.getString(EmailKey, "");
